@@ -34,6 +34,7 @@ def load_directory(directory):
     print("Loading data from directory", directory)
     files = {}
     for name in listdir(directory):
+        print(f"looking at {name}")
         subpath = path.join(directory, name)
         # Look for sample directories
         if path.isdir(subpath):
@@ -44,6 +45,7 @@ def load_directory(directory):
                 if filename.endswith(".fa") or filename.endswith(".fasta"):
                     with open(path.join(subpath, filename)) as fp:
                         files[name] += load_fasta(fp)
+                        print(f"loading file {filename}")
                 # Load gzipped fasta files
                 elif filename.endswith(".fa.gz") or filename.endswith(".fasta.gz"):
                     with gzip.open(path.join(subpath, filename), 'rt') as fp:

@@ -15,28 +15,25 @@ def kmer2str(val, k):
     return "".join(str_val)
 
 def get_id_nucleotide(s:str):
-    if s == 'A':
-        return 0b00
-    if s == 'T':
-        return 0b11
-    if s == 'G':
-        return 0b01
-    if s == 'C':
-        return 0b10
+    return (ord(s) >> 1) & 0b11
+
 def get_id_rev(s:str):
-    return (~get_id_nucleotide(s))&0b11
+    return get_id_nucleotide(s) ^0b10
 
 def stream_kmers(text:str, k:int):
+    assert k <= len(text) 
     res = 0
-    rev_res = 1 << k - 1
+    rev_res = 0
+    print(f"streaming with k = {k} and {len(text)} nucleotide")
     for i in range(k-1):
         res |= get_id_nucleotide(text[i])
-        rev_res |= get_id_rev(s[i])
+        rev_res |= get_id_rev(text[i]) << 2*(k-1)
         res <<=2
         rev_res >>=2
     for i in range(k,len(text)):
         res |= get_id_nucleotide(text[i])
-        rev_res |= get_id_rev(s[i])
+        rev_res |= get_id_rev(text[i]) <<  2*(k-1)
+        # print(f"string {text[i-k+1:i+1]}, got {kmer2str(res,k)} and {kmer2str(rev_res,k)}")
         yield min(res,rev_res)
         res <<=2
         rev_res >>=2
