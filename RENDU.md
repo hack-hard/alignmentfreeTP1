@@ -1,3 +1,5 @@
+# Eleve
+- tristan hacquard
 # Rapport de TD
 Dans ce TD nous avons implementés une méthode pour calculer une similarité entre séquence sans aligements.
 Nous avons subdivisés les séquences en kmers et comparé la proportion de kmers qui étaient dans les 2 séquences.
@@ -18,3 +20,5 @@ D =GCA_000008865.2
 E = GCA_000013265.1 
 
 On observe que l'on a une homologie très forte entre B,D et E.
+
+
