@@ -3,16 +3,16 @@ from TP.kmers import stream_kmers, kmer2str
 from itertools import product,chain
 from statistics import mean
 
-def jaccard(seq_a:list,seq_b:list):
+def jaccard(seq_a:list,seq_b:list,k:int):
     kmers_a = list(chain.from_iterable(stream_kmers(a,k) for a in seq_a))
     kmers_b = list(chain.from_iterable(stream_kmers(b,k) for b in seq_b))
     kmers_a.sort()
     kmers_b.sort()
     i ,j = 0,0
     n_unions =0
-    while i < len(kmers_a) or j < len(kmers_b):
-        if kmers_a[i] == kmmers_b[j]:
-            n_union +=1
+    while i < len(kmers_a) and j < len(kmers_b):
+        if kmers_a[i] == kmers_b[j]:
+            n_unions +=1
             i+=1
             j+=1
         elif kmers_a[i] < kmers_b[j]:
@@ -35,5 +35,5 @@ if __name__ == "__main__":
             
             # --- Complete here ---
 
-            j = jaccard(files[filenames[i]], files[filenames[j]], k)
-            print(filenames[i], filenames[j], j)
+            res = jaccard(files[filenames[i]], files[filenames[j]], k)
+            print(filenames[i], filenames[j], res)

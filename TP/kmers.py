@@ -24,7 +24,7 @@ def stream_kmers(text:str, k:int):
     assert k <= len(text) 
     res = 0
     rev_res = 0
-    print(f"streaming with k = {k} and {len(text)} nucleotide")
+    print(f"streaning with k = {k} and {len(text)} nucleotides")
     for i in range(k-1):
         res |= get_id_nucleotide(text[i])
         rev_res |= get_id_rev(text[i]) << 2*(k-1)
