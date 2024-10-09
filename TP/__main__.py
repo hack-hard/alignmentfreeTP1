@@ -1,16 +1,16 @@
 from TP.loading import load_directory
 from TP.kmers import stream_kmers, kmer2str
-from itertools import product
+from itertools import product,chain
 from statistics import mean
 
-def _jaccard(seq_a:str,seq_b:str):
-    kmers_a = list(stream_kmers(seq_a,k))
-    kmers_b = list(stream_kmers(seq_b,k))
+def jaccard(seq_a:list,seq_b:list):
+    kmers_a = list(chain.from_iterable(stream_kmers(a,k) for a in seq_a))
+    kmers_b = list(chain.from_iterable(stream_kmers(b,k) for b in seq_b))
     kmers_a.sort()
     kmers_b.sort()
-    i ,j = 0
+    i ,j = 0,0
     n_unions =0
-    while i < len(kmers_a) and j < len(kmers_b):
+    while i < len(kmers_a) or j < len(kmers_b):
         if kmers_a[i] == kmmers_b[j]:
             n_union +=1
             i+=1
@@ -20,9 +20,6 @@ def _jaccard(seq_a:str,seq_b:str):
         else:
             j+=1
     return n_unions /(len(kmers_a) + len(kmers_b) - n_unions)
-
-def jaccard(seq_a, seq_b, k):
-    return mean(_jaccard(a,b) for a,b in product(seq_a,seq_b))
 
 if __name__ == "__main__":
     print("Computation of Jaccard similarity between files")
