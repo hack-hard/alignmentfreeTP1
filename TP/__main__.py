@@ -1,11 +1,11 @@
 from TP.loading import load_directory
-from TP.kmers import stream_kmers, kmer2str
+from TP.kmers import stream_kmers, kmer2str, min_hash_sketch
 from itertools import product,chain
 from statistics import mean
 
 def jaccard(seq_a:list,seq_b:list,k:int):
-    kmers_a = list(chain.from_iterable(stream_kmers(a,k) for a in seq_a))
-    kmers_b = list(chain.from_iterable(stream_kmers(b,k) for b in seq_b))
+    kmers_a = list(chain.from_iterable(min_hash_sketch(a,k,10000) for a in seq_a))
+    kmers_b = list(chain.from_iterable(min_hash_sketch(b,k,10000) for b in seq_b))
     kmers_a.sort()
     kmers_b.sort()
     i ,j = 0,0
