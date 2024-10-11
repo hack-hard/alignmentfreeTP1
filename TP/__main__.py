@@ -4,8 +4,8 @@ from itertools import product,chain
 from statistics import mean
 
 def jaccard(seq_a:list,seq_b:list,k:int):
-    kmers_a = list(chain.from_iterable(min_hash_sketch(a,k,10000) for a in seq_a))
-    kmers_b = list(chain.from_iterable(min_hash_sketch(b,k,10000) for b in seq_b))
+    kmers_a = min_hash_sketch(seq_a,k,sum((len(a)for a in seq_a)))
+    kmers_b = min_hash_sketch(seq_b,k,sum((len(b)for b in seq_b)))
     kmers_a.sort()
     kmers_b.sort()
     i ,j = 0,0

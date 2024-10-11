@@ -1,5 +1,6 @@
 import heapq
 import math
+from itertools import chain
 def kmer2str(val, k):
     """ Transform a kmer integer into a its string representation
     :param int val: An integer representation of a kmer
@@ -73,6 +74,6 @@ def xorshift64(x:int):
     x ^= (x << 17) & 0xFFFFFFFFFFFFFFFF
     return x
     
-def min_hash_sketch(seq:str,k:int,s:int,hash=xorshift64)->list:
-    hash = filter_smallest(map(hash,stream_kmers(seq,k)),s)
+def min_hash_sketch(seq:list,k:int,s:int,hash=xorshift64)->list:
+    hash = filter_smallest(map(hash,chain.from_iterable((stream_kmers(s,k)) for s in seq)),s)
     return hash
