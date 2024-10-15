@@ -1,5 +1,5 @@
 from TP.loading import load_directory
-from TP.kmers import stream_kmers, kmer2str, min_hash_sketch
+from TP.kmers import stream_kmers, kmer2str, min_hash_sketch,compressed_min_hash_sketch
 from itertools import product,chain
 from statistics import mean
 

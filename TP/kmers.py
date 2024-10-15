@@ -1,6 +1,7 @@
 import heapq
 import math
 from itertools import chain
+import numpy as np
 def kmer2str(val, k):
     """ Transform a kmer integer into a its string representation
     :param int val: An integer representation of a kmer
@@ -60,12 +61,66 @@ def argmax(s:list):
             maximum = m
             i = k
     return i
-def filter_smallest(stream,s:int):
-	heap =[-math.inf] * s
-	for kmer in stream:
-		if heap[0]< -kmer:
-		    heapq.heappushpop(heap,-kmer)
-	return [-h for h in heap]
+import numpy as np
+
+def pushpop(heap:np.ndarray, item:int):
+    """
+    Pushes item onto the heap, then pops and returns the smallest item.
+    
+    Args:
+    heap (np.array): NumPy array representing a min heap
+    item: The item to push onto the heap
+    
+    Returns:
+    The smallest item in the resulting heap
+    """
+    if heap.size == 0:
+        return item
+    
+    if item < heap[0]:
+        item, heap[0] = heap[0], item
+        _siftdown(heap, 0)
+    
+    return item
+
+def _siftdown(heap:np.ndarray, pos):
+    endpos = len(heap)
+    startpos = pos
+    newitem = heap[pos]
+    childpos = 2*pos + 1
+    while childpos < endpos:
+        rightpos = childpos + 1
+        if rightpos < endpos and not heap[childpos] < heap[rightpos]:
+            childpos = rightpos
+        heap[pos] = heap[childpos]
+        pos = childpos
+        childpos = 2*pos + 1
+    heap[pos] = newitem
+    _siftup(heap, startpos, pos)
+
+def _siftup(heap, startpos, pos):
+    newitem = heap[pos]
+    while pos > startpos:
+        parentpos = (pos - 1) >> 1
+        parent = heap[parentpos]
+        if newitem < parent:
+            heap[pos] = parent
+            pos = parentpos
+            continue
+        break
+    heap[pos] = newitem
+
+def filter_smallest(stream,s:int,dtype=np.int64):
+    heap = np.full(s,np.iinfo(dtype).max,dtype = dtype)
+    for kmer in stream:
+        pushpop(heap,kmer)
+    return heap
+
+def filter_smallest_list(stream,s:int):
+    heap = [-np.inf]*s
+    for kmer in stream:
+        heapq.heappushpop(heap,-kmer)
+    return [- h for h in heap]
 
 
 def xorshift64(x:int):
@@ -75,5 +130,16 @@ def xorshift64(x:int):
     return x
     
 def min_hash_sketch(seq:list,k:int,s:int,hash=xorshift64)->list:
-    hash = filter_smallest(map(hash,chain.from_iterable((stream_kmers(s,k)) for s in seq)),s)
+    hash = filter_smallest_list(map(hash,chain.from_iterable((stream_kmers(s,k)) for s in seq)),s)
+    return hash
+
+def make_smaller(x:int):
+    #assume that x is a 64 bit integer that is "small".
+    dominant_bit = 63
+    while x & ( 1 << dominant_bit) == 0 and dominant_bit > 0:
+        dominant_bit -=1
+    return (dominant_bit << 10) | (x & (1 <<10 -1))       
+
+def compressed_min_hash_sketch(seq:list,k:int,s:int,hash=xorshift64) -> np.ndarray:
+    hash = filter_smallest_list(map(lambda x: make_smaller(hash(x)),chain.from_iterable((stream_kmers(s,k)) for s in seq)),s)
     return hash
