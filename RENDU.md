@@ -14,3 +14,9 @@ Nous avons subdivisés les séquences en kmers de longeuer 20 et nous en avons s
 | GCA_000013265.1 |                 |                 |                 |                 |                 |
 
 Concernant l'alignement avec les Prokaryotes, l'algorithme continue de tourner et n'a pas donné de résultats.
+
+|                  | GCA_029289425.3 | GCF_000001635.27 |
+| ---------------- | --------------- | ---------------- |
+| GCA_029289425.3  |                 | 1.0              |
+| GCF_000001635.27 |                 |                  |
+
