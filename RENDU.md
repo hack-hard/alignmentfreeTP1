@@ -1,24 +1,16 @@
 # Eleve
 - tristan hacquard
 # Rapport de TD
-Dans ce TD nous avons implementés une méthode pour calculer une similarité entre séquence sans aligements.
-Nous avons subdivisés les séquences en kmers et comparé la proportion de kmers qui étaient dans les 2 séquences.
+Dans ce TD nous avons implementés une méthode pour calculer la similarité de jaccard.
+Nous avons subdivisés les séquences en kmers de longeuer 20 et nous en avons sélectionné 10 000 par la méthode de minhash. Cependant, l'optimisation du tas en 16 bits n'as pas marché pour des raisons obscures et est données à titre indicative.
 
 # Table de calculs
-|     | A   | B     | C      | D      | E      |
-| --- | --- | ----- | ------ | ------ | ------ |
-| A   |     | 0.001 | 0.028  | 0.002  | 0.002  |
-| B   |     |       | 0.0018 | 0.435  | 0.334  |
-| C   |     |       |        | 0.0016 | 0.0019 |
-| D   |     |       |        |        | 0.299  |
-| E   |     |       |        |        |        |
-avec 
-A =GCA_000069965.1
-B =GCA_000005845.2 
-C=GCA_030271835.1 
-D =GCA_000008865.2 
-E = GCA_000013265.1 
+|                 | GCA_000069965.1 | GCA_000005845.2 | GCA_030271835.1 | GCA_000008865.2 | GCA_000013265.1 |
+| --------------- | --------------- | --------------- | --------------- | --------------- | --------------- |
+| GCA_000069965.1 |                 | 0.00257         | 0.0311          | 0.00232         | 0.00244         |
+| GCA_000005845.2 |                 |                 | 0.00258         | 0.436           | 0.341           |
+| GCA_030271835.1 |                 |                 |                 | 0.00232         | 0.00244         |
+| GCA_000008865.2 |                 |                 |                 |                 | 0.307           |
+| GCA_000013265.1 |                 |                 |                 |                 |                 |
 
-On observe que l'on a une homologie très forte entre B,D et E.
-
-
+Concernant l'alignement avec les Prokaryotes, l'algorithme continue de tourner et n'a pas donné de résultats.

@@ -41,8 +41,9 @@ def load_directory(directory):
             # Creates one list of sequence per sample
             files[name] = []
             for filename in listdir(subpath):
+                print(f"looking at file {filename}")
                 # Load raw fasta files
-                if filename.endswith(".fa") or filename.endswith(".fasta"):
+                if filename.endswith(".fa") or filename.endswith(".fna") or filename.endswith(".fasta"):
                     with open(path.join(subpath, filename)) as fp:
                         files[name] += load_fasta(fp)
                         print(f"loading file {filename}")
@@ -50,7 +51,8 @@ def load_directory(directory):
                 elif filename.endswith(".fa.gz") or filename.endswith(".fasta.gz"):
                     with gzip.open(path.join(subpath, filename), 'rt') as fp:
                         files[name] += load_fasta(fp)
-                        print("Loaded", filename, len(files[name]))
+                        print(f"loading file {filename}")
+            assert len(files[name]) > 0, f"directory {name} is empty"
     
     return files
 

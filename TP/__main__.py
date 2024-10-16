@@ -4,8 +4,10 @@ from itertools import product,chain
 from statistics import mean
 
 def jaccard(seq_a:list,seq_b:list,k:int):
-    kmers_a = min_hash_sketch(seq_a,k,sum((len(a)for a in seq_a)))
-    kmers_b = min_hash_sketch(seq_b,k,sum((len(b)for b in seq_b)))
+    kmers_a = min_hash_sketch(seq_a,k,1000)
+    kmers_b = min_hash_sketch(seq_b,k,1000)
+    assert len(kmers_a) > 0
+    assert len(kmers_b) > 0
     kmers_a.sort()
     kmers_b.sort()
     i ,j = 0,0
@@ -25,7 +27,7 @@ if __name__ == "__main__":
     print("Computation of Jaccard similarity between files")
 
     # Load all the files in a dictionary
-    files = load_directory("data")
+    files = load_directory("eukariote_data")
     k = 21
     
     print("Computing Jaccard similarity for all pairs of samples")
